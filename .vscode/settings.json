@@ -1,0 +1,12 @@
+{
+    "files.autoSave": "afterDelay",
+    "editor.fontSize": 18,
+"editor.fontFamily": "Fira Code Retina",
+ "editor.fontWeight": "600"
+"editor.fontLigatures": true,
+    "editor.formatOnSave": true,
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 90,
+    "prettier.printWidth": 90,
+    "prettier.tabWidth": 4
+}
