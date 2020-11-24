@@ -23,20 +23,31 @@ function PostForm() {
         createPost();
     }
     return (
-        <Form onSubmit={onSubmit}>
-            <h2>Create a Post:</h2>
-            <Form.Field>
-                <Form.Input
-                    placeholder="Hi  there"
-                    name="body"
-                    onChange={onChange}
-                    value={values.body}
-                />
-                <Button type="submit" color="violet">
-                    Submit
-                </Button>
-            </Form.Field>
-        </Form>
+        <>
+            {" "}
+            <Form onSubmit={onSubmit}>
+                <h2>Create a Post:</h2>
+                <Form.Field>
+                    <Form.Input
+                        placeholder="Hi  there"
+                        name="body"
+                        onChange={onChange}
+                        value={values.body}
+                        error={error ? true : false}
+                    />
+                    <Button type="submit" color="violet">
+                        Submit
+                    </Button>
+                </Form.Field>
+            </Form>
+            {error && (
+                <div className="ui error message" style={{ marginBottom: 20 }}>
+                    <ul className="list">
+                        <li>{error.graphQLErrors[0].message}</li>
+                    </ul>
+                </div>
+            )}
+        </>
     );
 }
 
