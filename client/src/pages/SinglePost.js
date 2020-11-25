@@ -1,30 +1,39 @@
 import React, { useContext } from "react";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { Button, Card, CardContent, Grid, Icon } from "semantic-ui-react";
 import moment from "moment";
+import { Button, Card, Grid, Image, Icon, Label } from "semantic-ui-react";
+
 import { AuthContext } from "../context/auth";
 import LikeButton from "../components/LikeButton";
+import DeleteButton from "../components/DeleteButton";
 
 function SinglePost(props) {
+    const postId = props.match.params.postId;
     const { user } = useContext(AuthContext);
-    const postId = props.match.param.postId;
     console.log(postId);
 
     const {
         data: { getPost },
-    } = useQuery(GET_POST_QUERY, {
-        variables: { postId },
+    } = useQuery(FETCH_POST_QUERY, {
+        variables: {
+            postId,
+        },
     });
+
+    function deletePostCallback() {
+        props.history.push("/");
+    }
+
     let postMarkup;
     if (!getPost) {
-        postMarkup = <p>Loading post ...</p>;
+        postMarkup = <p>Loading post..</p>;
     } else {
         const {
             id,
-            username,
             body,
             createdAt,
+            username,
             comments,
             likes,
             likeCount,
@@ -41,11 +50,11 @@ function SinglePost(props) {
                             float="right"
                         />
                     </Grid.Column>
-                    <Grid.Column width={2}>
-                        <Card>
+                    <Grid.Column width={10}>
+                        <Card fluid>
                             <Card.Content>
                                 <Card.Header>{username}</Card.Header>
-                                <Card.Meta>{moment(createdAt.fromNow())}</Card.Meta>
+                                <Card.Meta>{moment(createdAt).fromNow()}</Card.Meta>
                                 <Card.Description>{body}</Card.Description>
                             </Card.Content>
                             <hr />
@@ -53,16 +62,22 @@ function SinglePost(props) {
                                 <LikeButton user={user} post={{ id, likeCount, likes }} />
                                 <Button
                                     as="div"
-                                    localPosition="right"
-                                    onClick={console.log("coment on the post")}
+                                    labelPosition="right"
+                                    onClick={() => console.log("Comment on post")}
                                 >
                                     <Button basic color="blue">
                                         <Icon name="comments" />
                                     </Button>
-                                    <Label basic color="blue" pointing="right">
+                                    <Label basic color="blue" pointing="left">
                                         {commentCount}
                                     </Label>
                                 </Button>
+                                {user && user.username === username && (
+                                    <DeleteButton
+                                        postId={id}
+                                        callback={deletePostCallback}
+                                    />
+                                )}
                             </Card.Content>
                         </Card>
                     </Grid.Column>
@@ -70,13 +85,15 @@ function SinglePost(props) {
             </Grid>
         );
     }
+    return postMarkup;
 }
-const GET_POST_QUERY = gql`
+
+const FETCH_POST_QUERY = gql`
     query($postId: ID!) {
         getPost(postId: $postId) {
             id
             body
-            created
+            createdAt
             username
             likeCount
             likes {
@@ -87,7 +104,7 @@ const GET_POST_QUERY = gql`
                 id
                 username
                 createdAt
-                bdoy
+                body
             }
         }
     }
