@@ -1,7 +1,7 @@
 {
     "files.autoSave": "afterDelay",
     "editor.fontSize": 18,
-"editor.fontFamily": " Pacifico, cursive",
+"editor.fontFamily": "Operator Mono, Inconsolata, Ubuntu Mono, Fira Code, Pacifico, cursive",
 //  "editor.fontWeight": "600",
 "editor.fontLigatures": true,
     "editor.formatOnSave": true,
