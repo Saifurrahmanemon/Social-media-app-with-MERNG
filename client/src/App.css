@@ -1,16 +1,15 @@
-@import url("https://fonts.googleapis.com/css2?family=Nerko+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@300&display=swap");
 
 .page-title {
     display: block !important;
     text-align: center;
     font-size: 2rem;
-    margin-top: 10px;
-    font-family: "Nerko One", cursive;
+    margin-top: 10vh;
 }
 
 .form-container {
-    width: 400px;
     margin: auto;
+    font-family: "Sansita Swashed", cursive !important ;
 }
 
 .ui.teal.button:focus,

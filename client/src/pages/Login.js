@@ -1,9 +1,11 @@
-import React, { useState, useContext } from "react";
-import { Button, Form } from "semantic-ui-react";
+import React, { useContext, useState } from "react";
+
+import { Button, Form, Grid, Header, Segment } from "semantic-ui-react";
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
+
 import { AuthContext } from "../context/auth";
-import { useForm } from "../utils/hooks";
+import { useForm } from "../util/hooks";
 
 function Login(props) {
     const context = useContext(AuthContext);
@@ -31,39 +33,59 @@ function Login(props) {
 
     return (
         <div className="form-container">
-            <Form onSubmit={onSubmit} noValidate className={loading ? "loading" : ""}>
-                <h1>Login</h1>
-                <Form.Input
-                    label="Username"
-                    placeholder="Username.."
-                    name="username"
-                    type="text"
-                    value={values.username}
-                    error={errors.username ? true : false}
-                    onChange={onChange}
-                />
-                <Form.Input
-                    label="Password"
-                    placeholder="Password.."
-                    name="password"
-                    type="password"
-                    value={values.password}
-                    error={errors.password ? true : false}
-                    onChange={onChange}
-                />
-                <Button type="submit" primary>
-                    Login
-                </Button>
-            </Form>
-            {Object.keys(errors).length > 0 && (
-                <div className="ui error message">
-                    <ul className="list">
-                        {Object.values(errors).map((value) => (
-                            <li key={value}>{value}</li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+            <Grid textAlign="center" verticalAlign="middle">
+                <Grid.Column style={{ maxWidth: 600 }}>
+                    <Header as="h1" color="violet" textAlign="left">
+                        Login
+                    </Header>
+                    <Form
+                        size="large"
+                        onSubmit={onSubmit}
+                        noValidate
+                        className={loading ? "loading" : ""}
+                    >
+                        <Segment stacked>
+                            <Form.Input
+                                fluid
+                                icon="user"
+                                iconPosition="center"
+                                label="Username"
+                                placeholder="Username.."
+                                name="username"
+                                type="text"
+                                value={values.username}
+                                error={errors.username ? true : false}
+                                onChange={onChange}
+                            />
+                            <Form.Input
+                                fluid
+                                icon="lock"
+                                iconPosition="center"
+                                placeholder="Password"
+                                type="password"
+                                label="Password"
+                                name="password"
+                                value={values.password}
+                                error={errors.password ? true : false}
+                                onChange={onChange}
+                            />
+
+                            <Button color="violet" fluid size="large">
+                                Login
+                            </Button>
+                        </Segment>
+                    </Form>
+                    {Object.keys(errors).length > 0 && (
+                        <div className="ui error message">
+                            <ul className="list">
+                                {Object.values(errors).map((value) => (
+                                    <li key={value}>{value}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </Grid.Column>
+            </Grid>
         </div>
     );
 }

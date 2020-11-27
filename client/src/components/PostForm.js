@@ -1,13 +1,16 @@
 import React from "react";
-import { Button, Form } from "semantic-ui-react";
-import { useForm } from "../utils/hooks";
-import { useMutation } from "@apollo/react-hooks";
+import { Button, Form, Segment } from "semantic-ui-react";
 import gql from "graphql-tag";
-import { FETCH_POSTS_QUERY } from "../utils/graphql";
+import { useMutation } from "@apollo/react-hooks";
+
+import { useForm } from "../util/hooks";
+import { FETCH_POSTS_QUERY } from "../util/graphql";
+
 function PostForm() {
-    const { values, onSubmit, onChange } = useForm(createPostCallback, {
+    const { values, onChange, onSubmit } = useForm(createPostCallback, {
         body: "",
     });
+
     const [createPost, { error }] = useMutation(CREATE_POST_MUTATION, {
         variables: values,
         update(proxy, result) {
@@ -19,34 +22,38 @@ function PostForm() {
             values.body = "";
         },
     });
+
     function createPostCallback() {
         createPost();
     }
+
     return (
         <>
-            {" "}
-            <Form onSubmit={onSubmit}>
-                <h2>Create a Post:</h2>
-                <Form.Field>
-                    <Form.Input
-                        placeholder="Hi  there"
-                        name="body"
-                        onChange={onChange}
-                        value={values.body}
-                        error={error ? true : false}
-                    />
-                    <Button type="submit" color="violet">
-                        Submit
-                    </Button>
-                </Form.Field>
-            </Form>
-            {error && (
-                <div className="ui error message" style={{ marginBottom: 20 }}>
-                    <ul className="list">
-                        <li>{error.graphQLErrors[0].message}</li>
-                    </ul>
-                </div>
-            )}
+            <Segment color="violet" overflow="hidden">
+                {" "}
+                <Form onSubmit={onSubmit} fluid="true" color="violet">
+                    <h2>Create a post: </h2>
+                    <Form.Field>
+                        <Form.Input
+                            placeholder="Whats on your mind?"
+                            name="body"
+                            onChange={onChange}
+                            value={values.body}
+                            error={error ? true : false}
+                        />
+                        <Button type="submit" color="violet">
+                            Post
+                        </Button>
+                    </Form.Field>
+                </Form>
+                {error && (
+                    <div className="ui error message  " style={{ marginBottom: 20 }}>
+                        <ul className="list">
+                            <li>{error.graphQLErrors[0].message}</li>
+                        </ul>
+                    </div>
+                )}
+            </Segment>
         </>
     );
 }
